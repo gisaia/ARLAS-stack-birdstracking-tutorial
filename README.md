@@ -62,7 +62,7 @@ __2. Indexing birdtracking data in Elasticsearch__
 
     ```
 - Index data in `birdstracking_data.csv` in Elasticsearch
-    - For that we need Logstash
+    - For that we need Logstash, a data processing pipeline that ingests data from a multitude of sources
 
         ```shell
         ( wget https://artifacts.elastic.co/downloads/logstash/logstash-7.4.2.tar.gz ; tar -xzf logstash-7.4.2.tar.gz )
