@@ -1,0 +1,7 @@
+{
+    "index_name": "birdstracking_index",
+    "id_path": "identifier",
+    "timestamp_path": "timestamp",
+    "centroid_path": "location",
+    "geometry_path": "trail"
+}
