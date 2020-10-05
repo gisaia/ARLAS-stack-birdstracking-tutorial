@@ -1,0 +1,43 @@
+{
+  "mappings": {
+    "dynamic": false,
+    "properties": {
+      "internal": {
+        "properties": {
+          "fulltext": {
+            "type": "text"
+          },
+          "autocomplete": {
+            "type": "keyword"
+          }
+        }
+      },
+      "identifier": {
+        "type": "keyword"
+      },
+      "trail": {
+        "type": "geo_shape"
+      },
+      "height_m": {
+        "type": "float"
+      },
+      "speed_ms": {
+        "type": "float"
+      },
+      "timestamp": {
+        "type": "date",
+        "format": "epoch_second"
+      },
+      "location": {
+        "type": "geo_point"
+      },
+      "name": {
+        "type": "keyword",
+        "copy_to": [
+          "internal.fulltext",
+          "internal.autocomplete"
+        ]
+      }
+    }
+  }
+}
