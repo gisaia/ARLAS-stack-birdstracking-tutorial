@@ -1,11 +1,20 @@
 # ARLAS-stack-birdstracking-tutorial
 
 ## About this tutorial
-### What will you learn
+### What will you learn ?
 With this tutorial, you'll be able to:
 - start an ARLAS-Exploration stack
 - Index some birdtracking data in Elasticsearch
 - Reference the indexed birdtracking data in ARLAS
+
+### What will you need ?
+
+You will need :
+- docker & docker-compose
+- curl
+
+### What will you get ?
+
 
 ## Birdstracking data
 
@@ -28,10 +37,6 @@ The subset is `birdstracking_data.csv`. It contains around 77 000 birds GPS posi
 We will explore this data using ARLAS.
 
 __1. Starting ARLAS Exploration Stack__
-
-> Prequisites: To have installed
-> - docker
-> - docker-compose
 
 - Clone the [ARLAS-Exploration-stack](https://github.com/gisaia/ARLAS-Exploration-stack.git) outside this project
 
@@ -75,19 +80,19 @@ __2. Indexing birdtracking data in Elasticsearch__
 
     ```
 - Index data in `birdstracking_data.csv` in Elasticsearch
-    - For that we need Logstash, a data processing pipeline that ingests data from a multitude of sources
+    - We need Logstash as a data processing pipeline that ingests data in Elasticsearch. So we will download it and untar it:
 
         ```shell
         ( wget https://artifacts.elastic.co/downloads/logstash/logstash-7.4.2.tar.gz ; tar -xzf logstash-7.4.2.tar.gz )
         ```
-    - Index data
+    - Now we can index the data:
 
         ```shell
         cat birdstracking_data.csv \
         | ./logstash-7.4.2/bin/logstash \
         -f configs/birdtracking2es.logstash.conf
         ```
-    - Check if __77 384__ birds positions are indexed
+    - Check if __77 384__ birds positions are indexed:
 
         ```shell
         curl -XGET http://localhost:9200/birdstracking_index/_count?pretty
