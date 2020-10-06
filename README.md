@@ -35,7 +35,13 @@ __1. Starting ARLAS Exploration Stack__
 - Start the stack 
     ```shell
     cd ARLAS-Exploration-stack
-    docker-compose up
+    docker-compose up -d \
+        arlas-wui \
+        arlas-hub \
+        arlas-builder \
+        arlas-server \
+        arlas-persistence-server \
+        elasticsearch
     ```
     This will start 5 services:
     - ARLAS-wui at http://localhost:8096
@@ -56,7 +62,7 @@ __2. Indexing birdtracking data in Elasticsearch__
 - Create `birdstracking_index` index in Elasticsearch with `configs/birdtracking.es_mapping.json` mapping file
 
     ```shell
-    curl -XPUT http://localhost:9200/birdstracking_index/ \
+    curl -XPUT http://localhost:9200/birdstracking_index/?pretty \
     -d @configs/birdtracking.es_mapping.json \
     -H 'Content-Type: application/json'
 
