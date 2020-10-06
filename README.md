@@ -1,5 +1,12 @@
 # ARLAS-stack-birdstracking-tutorial
 
+## About this tutorial
+### What will you learn
+With this tutorial, you'll be able to:
+- start an ARLAS-Exploration stack
+- Index some birdtracking data in Elasticsearch
+- Reference the indexed birdtracking data in ARLAS
+
 ## Birdstracking data
 
 Let's explore some white storks migration data, provided by __the Movebank Data Repository__. 
