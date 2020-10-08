@@ -6,6 +6,7 @@ With this tutorial, you'll be able to:
 - start an ARLAS-Exploration stack
 - Index some birdtracking data in Elasticsearch
 - Reference the indexed birdtracking data in ARLAS
+- Create a view of ARLAS-wui (a dashboard) to explore the birdtracking data using ARLAS-wui-hub and ARLAS-wui-builder
 
 ### What will you need ?
 
@@ -32,19 +33,25 @@ The subset is `birdstracking_data.csv`. It contains around 77 000 birds GPS posi
 - height_m: Altitude of the birds at this position (m)
 - trail: Linestring between the current position of the bird and the next one
 
+A line of the csv file looks like:
+
+|identifier|name|location|timestamp|speed_ms|height_m|trail|
+|---|---|---|---|---|---|---|
+|009829e...|Redrunner + / DER AU057 (eobs 3339)|'{"lon":8.7,"lat":50.4}'|1491922507|190.65|0.15|'{"coordinates":[[8.7,50.4],[8.72,50.41]],"type":"LineString"}'|
 ## Exploring Birdstracking data
 
 We will explore this data using ARLAS.
 
 __1. Starting ARLAS Exploration Stack__
 
-- Clone the [ARLAS-Exploration-stack](https://github.com/gisaia/ARLAS-Exploration-stack.git) outside this project
+- Get the docker-compose file from [ARLAS-Exploration-stack](https://github.com/gisaia/ARLAS-Exploration-stack.git) that will allow us to start the ARLAS stack
 
     ```shell
-    cd ..
-    git clone https://github.com/gisaia/ARLAS-Exploration-stack.git
+    curl -XGET \
+        "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/develop/docker-compose.yaml?token=AGMAY2BRSA7XD3KKD6JN6J27QYNSA" \
+        -o docker-compose.yaml
     ```
-- Start the stack 
+- Start the ARLAS stack 
     ```shell
     cd ARLAS-Exploration-stack
     docker-compose up -d \
@@ -55,7 +62,7 @@ __1. Starting ARLAS Exploration Stack__
         arlas-persistence-server \
         elasticsearch
     ```
-    This will start 5 services:
+    6 services are started:
     - ARLAS-wui at http://localhost:8096
     - ARLAS-wui-builder at http://localhost:8095
     - ARLAS-wui-hub at http://localhost:8094
@@ -63,14 +70,8 @@ __1. Starting ARLAS Exploration Stack__
     - ARLAS-persistence at http://localhost:19997/arlas-persistence-server/swagger
     - Elasticsearch at http://localhost:9200
 
-    _Note: You can use the script `start.sh` instead of `docker-compose up` command. This script has several parameters that helps you start an exernal Elasticsearch cluster or an ARLAS-server for example_
-
 __2. Indexing birdtracking data in Elasticsearch__
 
-- Go back to this repository
-    ```shell
-    cd ../ARLAS-stack-birdstracking-tutorial
-    ```
 - Create `birdstracking_index` index in Elasticsearch with `configs/birdtracking.es_mapping.json` mapping file
 
     ```shell
