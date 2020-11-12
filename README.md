@@ -53,7 +53,6 @@ __1. Starting ARLAS Exploration Stack__
     ```
 - Start the ARLAS stack 
     ```shell
-    cd ARLAS-Exploration-stack
     docker-compose up -d \
         arlas-wui \
         arlas-hub \
@@ -70,6 +69,12 @@ __1. Starting ARLAS Exploration Stack__
     - ARLAS-persistence at http://localhost:19997/arlas-persistence-server/swagger
     - Elasticsearch at http://localhost:9200
 
+    Check that the 6 are up and running using the following command: 
+
+    ```shell
+    docker ps
+    ```
+
 __2. Indexing birdtracking data in Elasticsearch__
 
 - Create `birdstracking_index` index in Elasticsearch with `configs/birdtracking.es_mapping.json` mapping file
@@ -80,6 +85,13 @@ __2. Indexing birdtracking data in Elasticsearch__
     -H 'Content-Type: application/json'
 
     ```
+
+    You can check that the index is successfuly created by running the following command
+
+    ```shell
+    curl -XGET http://localhost:9200/birdstracking_index/_count?pretty
+    ```
+
 - Index data in `birdstracking_data.csv` in Elasticsearch
     - We need Logstash as a data processing pipeline that ingests data in Elasticsearch. So we will download it and untar it:
 
@@ -113,4 +125,10 @@ The collection references an identifier, a timestamp, and geographical fields wh
     --header 'Accept: application/json' \
     "http://localhost:19999/arlas/collections/birdstracking_collection?pretty=true" \
     --data @birdstracking_collection.json
+    ```
+
+    Check that the collection is created using the ARLAS-server `collections/{collection}`
+
+    ```
+    curl -X GET "http://localhost:19999/arlas/collections/birdstracking_collection?pretty=true"
     ```

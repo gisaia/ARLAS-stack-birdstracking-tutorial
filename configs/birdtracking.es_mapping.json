@@ -1,17 +1,6 @@
 {
   "mappings": {
-    "dynamic": false,
     "properties": {
-      "internal": {
-        "properties": {
-          "fulltext": {
-            "type": "text"
-          },
-          "autocomplete": {
-            "type": "keyword"
-          }
-        }
-      },
       "identifier": {
         "type": "keyword"
       },
@@ -37,7 +26,18 @@
           "internal.fulltext",
           "internal.autocomplete"
         ]
+      },
+      "internal": {
+        "properties": {
+          "fulltext": {
+            "type": "text"
+          },
+          "autocomplete": {
+            "type": "keyword"
+          }
+        }
       }
-    }
+    },
+    "dynamic": false
   }
 }
