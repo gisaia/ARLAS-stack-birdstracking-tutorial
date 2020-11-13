@@ -4,8 +4,12 @@
       "identifier": {
         "type": "keyword"
       },
-      "trail": {
-        "type": "geo_shape"
+      "location": {
+        "type": "geo_point"
+      },
+      "timestamp": {
+        "type": "date",
+        "format": "epoch_second"
       },
       "height_m": {
         "type": "float"
@@ -13,12 +17,8 @@
       "speed_ms": {
         "type": "float"
       },
-      "timestamp": {
-        "type": "date",
-        "format": "epoch_second"
-      },
-      "location": {
-        "type": "geo_point"
+      "trail": {
+        "type": "geo_shape"
       },
       "name": {
         "type": "keyword",
