@@ -45,7 +45,7 @@ We will explore this data using ARLAS.
 __0. Download this tutorial__
 
 ```shell
-git clone git@github.com:gisaia/ARLAS-stack-birdstracking-tutorial.git
+git clone https://github.com/gisaia/ARLAS-stack-birdstracking-tutorial.git
 ```
 
 __1. Starting ARLAS Exploration Stack__
@@ -54,7 +54,7 @@ __1. Starting ARLAS Exploration Stack__
 
     ```shell
     curl -XGET \
-        "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/feature/14.0.0/docker-compose.yaml?token=AGMAY2GEQVCGLGZ6OODYJAK7W5QTC" \
+        "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/blob/develop/docker-compose.yaml" \
         -o docker-compose.yaml
     ```
 - Start the ARLAS stack 
