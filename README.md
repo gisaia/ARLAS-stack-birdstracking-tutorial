@@ -42,6 +42,12 @@ A line of the csv file looks like:
 
 We will explore this data using ARLAS.
 
+__0. Download this tutorial__
+
+```shell
+git clone git@github.com:gisaia/ARLAS-stack-birdstracking-tutorial.git
+```
+
 __1. Starting ARLAS Exploration Stack__
 
 - Get the docker-compose file from [ARLAS-Exploration-stack](https://github.com/gisaia/ARLAS-Exploration-stack.git) that will allow us to start the ARLAS stack
@@ -89,7 +95,7 @@ __2. Indexing birdtracking data in Elasticsearch__
     You can check that the index is successfuly created by running the following command
 
     ```shell
-    curl -XGET http://localhost:9200/birdstracking_index/_count?pretty
+    curl -XGET http://localhost:9200/birdstracking_index/_mapping?pretty
     ```
 
 - Index data in `birdstracking_data.csv` in Elasticsearch
