@@ -48,7 +48,7 @@ __1. Starting ARLAS Exploration Stack__
 
     ```shell
     curl -XGET \
-        "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/develop/docker-compose.yaml?token=AGMAY2BRSA7XD3KKD6JN6J27QYNSA" \
+        "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/feature/14.0.0/docker-compose.yaml?token=AGMAY2GEQVCGLGZ6OODYJAK7W5QTC" \
         -o docker-compose.yaml
     ```
 - Start the ARLAS stack 
