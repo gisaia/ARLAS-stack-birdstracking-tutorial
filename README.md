@@ -394,7 +394,7 @@ For this tutorial, we only have ~77 000 birds positions to explore. This allowed
 
 But what to do in case we had millions of positions to display ? 
 
-It would be very difficult to display them all as it would be very heavy to request all that data at once and the browser will not be able to render as many features. We will end up loosing the user expercience fluidity.
+It would be very difficult to display them all as it would be very heavy to request all that data at once and the browser will not be able to render as many features. We will end up loosing the user experience fluidity.
 
 Most importantly, loading millions of birds positions on the map will not be necessarily understandable: we cannot derive clear and synthesized information from it.
 
