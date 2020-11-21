@@ -19,7 +19,7 @@ You will need :
 
 ## Birdstracking data
 
-Let's explore some white storks migration data, provided by __the Movebank Data Repository__. 
+Let's explore some white storks migration data, provided by __the Movebank Data Repository__.
 
 We built a subset of the dataset provided in [this package](doi:10.5441/001/1.ck04mn78) by Movebank.
 
@@ -54,10 +54,10 @@ __1. Starting ARLAS Exploration Stack__
 
     ```shell
     curl -XGET \
-        "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/blob/develop/docker-compose.yaml" \
+        "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/develop/docker-compose.yaml" \
         -o docker-compose.yaml
     ```
-- Start the ARLAS stack 
+- Start the ARLAS stack
     ```shell
     docker-compose up -d \
         arlas-wui \
@@ -75,7 +75,7 @@ __1. Starting ARLAS Exploration Stack__
     - ARLAS-persistence at http://localhost:19997/arlas-persistence-server/swagger
     - Elasticsearch at http://localhost:9200
 
-    Check that the 6 are up and running using the following command: 
+    Check that the 6 are up and running using the following command:
 
     ```shell
     docker ps
@@ -140,7 +140,7 @@ The collection references an identifier, a timestamp, and geographical fields wh
     ```
 __4. Create a dashbord to explore `birdstracking data` with ARLAS__
 
-ARLAS stack is up and running and we have birdstracking data available for exploration. We can now create our first dashboard composed of 
+ARLAS stack is up and running and we have birdstracking data available for exploration. We can now create our first dashboard composed of
 - a map to observe the birds trails, the positions' geographical distribution
 - a timeline presenting the number of birds positions over time
 - a search bar to look for birds by their names for instance
@@ -244,7 +244,7 @@ Let's find out the time period when these positions were emitted.
 
 For that, let's define a timeline: a histogram that will represent the number of birds positions over time.
 
-For the x-Axis we choose the `timestamp` field and for the y-Axis we choose `Hits count`: the number of positions in each bucket. We set 50 buckets in this example 
+For the x-Axis we choose the `timestamp` field and for the y-Axis we choose `Hits count`: the number of positions in each bucket. We set 50 buckets in this example
 
 <p align="center">
     <img src="./images/timeline.png" width="70%">
@@ -264,7 +264,7 @@ figure 10: Timeline render
 
 ### Search bar configuration
 
-To define the search bar we can set 
+To define the search bar we can set
 - the placeholder string;
 - the field used to seach keywords
 - the field used to autocomplete the searched words
@@ -285,7 +285,7 @@ Now we defined
 
 Let's save this dashboard by clicking on the 'Disk' icon at the left-bottom of the page.
 
-If we go back to ARLAS-wui-hub at http://localhost:8094, we'll find the `Birdstracking dashboard` created. 
+If we go back to ARLAS-wui-hub at http://localhost:8094, we'll find the `Birdstracking dashboard` created.
 
 <p align="center">
     <img src="./images/dashboard_created.png" width="70%">
@@ -388,11 +388,11 @@ After saving this layer we can preview it in the `Preview` tab and start our ana
 figure 18: Preview of birds trails according to the altitude
 </p>
 
-### Geo Big Data 
+### Geo Big Data
 
-For this tutorial, we only have ~77 000 birds positions to explore. This allowed us to display the birds trails directly on the map. 
+For this tutorial, we only have ~77 000 birds positions to explore. This allowed us to display the birds trails directly on the map.
 
-But what to do in case we had millions of positions to display ? 
+But what to do in case we had millions of positions to display ?
 
 It would be very difficult to display them all as it would be very heavy to request all that data at once and the browser will not be able to render as many features. We will end up loosing the user experience fluidity.
 
@@ -437,7 +437,7 @@ figure 21: Birds positions geographical distribution
 
 We focused on the geographical and temporal analysis. We can also explore other dimensions of the data.
 
-Let's see what does the speed distribution of these positions looks like. 
+Let's see what does the speed distribution of these positions looks like.
 
 To do so we need to create a histogram. ARLAS proposes to organise all the histograms and other widgets in an analytics board.
 
