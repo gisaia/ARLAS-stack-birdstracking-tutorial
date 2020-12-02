@@ -52,11 +52,13 @@ __1. Starting ARLAS Exploration Stack__
 
 - Get the docker-compose file from [ARLAS-Exploration-stack](https://github.com/gisaia/ARLAS-Exploration-stack.git) that will allow us to start the ARLAS stack
 
-    ```shell
-    curl -XGET \
-        "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/develop/docker-compose.yaml" \
-        -o docker-compose.yaml
-    ```
+```shell
+curl -XGET \
+    "https://raw.githubusercontent.com/gisaia/ARLAS-Exploration-stack/develop/docker-compose-withoutnginx.yaml" \
+    -o docker-compose.yaml
+
+```
+
 - Start the ARLAS stack
     ```shell
     docker-compose up -d \
