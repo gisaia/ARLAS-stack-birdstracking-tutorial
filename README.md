@@ -97,7 +97,7 @@ __1. Starting ARLAS Exploration Stack__
 
 __2. Indexing birdtracking data in Elasticsearch__
 
-- Create `birdstracking_index` index in Elasticsearch with `configs/birdtracking.es_mapping.json` mapping file
+- Create `birdstracking_index` index in Elasticsearch with `birdtracking.es_mapping.json` mapping file
 
     ```shell
 
