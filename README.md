@@ -3,6 +3,7 @@
 ## About this tutorial
 ### What will you learn ?
 With this tutorial, you'll be able to:
+
 - start an ARLAS-Exploration stack
 - Index some birdtracking data in Elasticsearch
 - Reference the indexed birdtracking data in ARLAS
@@ -11,13 +12,14 @@ With this tutorial, you'll be able to:
 ### What will you need ?
 
 You will need :
+
 - docker & docker-compose
 - curl
 
 ### What will you get ?
 
 <p align="center">
-    <img src="./images/check_dashboard_3.png" width="70%">
+    <img src="./images/check_dashboard_3.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 Exploration app created in this tutorial
@@ -44,6 +46,8 @@ A line of the csv file looks like:
 |identifier|name|location|timestamp|speed_ms|height_m|trail|
 |---|---|---|---|---|---|---|
 |009829e...|Redrunner + / DER AU057 (eobs 3339)|'{"lon":8.7,"lat":50.4}'|1491922507|190.65|0.15|'{"coordinates":[[8.7,50.4],[8.72,50.41]],"type":"LineString"}'|
+
+
 ## Exploring Birdstracking data
 
 We will explore this data using ARLAS.
@@ -60,17 +64,17 @@ cd ARLAS-stack-birdstracking-tutorial
 
 - Download the birdstracking data
 
-    ```shell
-    curl -L -O "https://github.com/gisaia/ARLAS-stack-birdstracking-tutorial/raw/main/data/birdstracking_data.csv"
+```shell
+curl -L -O "https://github.com/gisaia/ARLAS-stack-birdstracking-tutorial/raw/main/data/birdstracking_data.csv"
 
-    ```
+```
 
-    Check that `birdstracking_data.csv` file is downloaded
+Check that `birdstracking_data.csv` file is downloaded
 
-    ```shell
-    ls -l birdstracking_data.csv
+```shell
+ls -l birdstracking_data.csv
 
-    ```
+```
 
 - Download the ARLAS-Exploration-stack project and unzip it
 
@@ -99,46 +103,52 @@ __2. Indexing birdtracking data in Elasticsearch__
 
 - Create `birdstracking_index` index in Elasticsearch with `birdtracking.es_mapping.json` mapping file
 
-    ```shell
+```shell
+curl https://raw.githubusercontent.com/gisaia/ARLAS-stack-birdstracking-tutorial/main/configs/birdtracking.es_mapping.json | \
+curl -XPUT http://localhost:9200/birdstracking_index/?pretty \
+    -d @- \
+    -H 'Content-Type: application/json'
 
-    curl https://raw.githubusercontent.com/gisaia/ARLAS-stack-birdstracking-tutorial/main/configs/birdtracking.es_mapping.json | \
-    curl -XPUT http://localhost:9200/birdstracking_index/?pretty \
-        -d @- \
-        -H 'Content-Type: application/json'
+```
 
-    ```
+You can check that the index is successfuly created by running the following command
 
-    You can check that the index is successfuly created by running the following command
+```shell
+curl -XGET http://localhost:9200/birdstracking_index/_mapping?pretty
 
-    ```shell
-    curl -XGET http://localhost:9200/birdstracking_index/_mapping?pretty
-    ```
+```
 
-- Index data in `birdstracking_data.csv` in Elasticsearch
-    - We need Logstash as a data processing pipeline that ingests data in Elasticsearch. So we will download it and untar it:
+- Index data in `birdstracking_data.csv` in Elasticsearch.  For that, We need Logstash as a data processing pipeline that ingests data in Elasticsearch. So we will download it and untar it:
 
-        ```shell
-        ( wget https://artifacts.elastic.co/downloads/logstash/logstash-7.4.2.tar.gz; tar -xzf logstash-7.4.2.tar.gz )
-        ```
-    - Logstash needs a configuration file (`birdtracking2es.logstash.conf`) that indicates how to transform data from the CSV file and index it in Elasticsearch.
+```shell
+( wget https://artifacts.elastic.co/downloads/logstash/logstash-7.4.2.tar.gz; tar -xzf logstash-7.4.2.tar.gz )
 
-        ```shell
-        curl "https://raw.githubusercontent.com/gisaia/ARLAS-stack-birdstracking-tutorial/main/configs/birdtracking2es.logstash.conf" \
-            -o birdtracking2es.logstash.conf
-        ```
+```
 
-    - Now we can index the data:
+- Logstash needs a configuration file (`birdtracking2es.logstash.conf`) that indicates how to transform data from the CSV file and index it in Elasticsearch.
 
-        ```shell
-        cat birdstracking_data.csv | \
-            ./logstash-7.4.2/bin/logstash \
-            -f birdtracking2es.logstash.conf
-        ```
-    - Check if __77 384__ birds positions are indexed:
+```shell
+curl "https://raw.githubusercontent.com/gisaia/ARLAS-stack-birdstracking-tutorial/main/configs/birdtracking2es.logstash.conf" \
+    -o birdtracking2es.logstash.conf
+    
+```
 
-        ```shell
-        curl -XGET http://localhost:9200/birdstracking_index/_count?pretty
-        ```
+- Now we can index the data:
+
+```shell
+cat birdstracking_data.csv | \
+    ./logstash-7.4.2/bin/logstash \
+    -f birdtracking2es.logstash.conf
+    
+```
+
+- Check if __77 384__ birds positions are indexed:
+
+```shell
+curl -XGET http://localhost:9200/birdstracking_index/_count?pretty
+
+```
+
 __3. Declaring `birdstracking_index` in ARLAS__
 
 ARLAS-server interfaces with data indexed in Elasticsearch via a collection reference.
@@ -148,22 +158,23 @@ The collection references an identifier, a timestamp, and geographical fields wh
 
 - Create a Birdstracking collection in ARL  AS
 
-    ```shell
-    curl "https://raw.githubusercontent.com/gisaia/ARLAS-stack-birdstracking-tutorial/main/birdstracking_collection.json" | \
-    curl -X PUT \
-        --header 'Content-Type: application/json;charset=utf-8' \
-        --header 'Accept: application/json' \
-        "http://localhost:81/server/collections/birdstracking_collection?pretty=true" \
-        --data @-
+```shell
+curl "https://raw.githubusercontent.com/gisaia/ARLAS-stack-birdstracking-tutorial/main/birdstracking_collection.json" | \
+curl -X PUT \
+    --header 'Content-Type: application/json;charset=utf-8' \
+    --header 'Accept: application/json' \
+    "http://localhost:81/server/collections/birdstracking_collection?pretty=true" \
+    --data @-
 
-    ```
+```
 
 - Check that the collection is created using the ARLAS-server `collections/{collection}`
 
-    ```
-    curl -X GET "http://localhost:81/server/collections/birdstracking_collection?pretty=true"
-    
-    ```
+```
+curl -X GET "http://localhost:81/server/collections/birdstracking_collection?pretty=true"
+
+```
+
 __4. Create a dashbord to explore `birdstracking data` with ARLAS__
 
 ARLAS stack is up and running and we have birdstracking data available for exploration. We can now create our first dashboard composed of
@@ -175,7 +186,7 @@ ARLAS stack is up and running and we have birdstracking data available for explo
 To do so, let's go to ARLAS-wui-hub at http://localhost:81/hub and create a new dashboard named `Birdstracking dashboard`
 
 <p align="center">
-    <img src="./images/create_dashboard.png" width="70%">
+    <img src="./images/create_dashboard.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 0: Creation of a dashboard in ARLAS-wui-hub
@@ -188,7 +199,7 @@ After clicking on __Create__, you are automatically redirected to ARLAS-wui-buil
 The first thing we need to do is to tell ARLAS which collection of data we want to use to create our dashboard
 
 <p align="center">
-    <img src="./images/choose_collection.png" width="70%">
+    <img src="./images/choose_collection.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 1: Choose collection
@@ -201,7 +212,7 @@ in our case we choose the `birdtracking_collection`
 As a first step, I'll set the map at zoom level 7 and the map's center coordinates at Latitude=44° and Longitude=4°. This way, when loading my dashboard in ARLAS-wui, the map will be positionned over France.
 
 <p align="center">
-    <img src="./images/global_map.png" width="70%">
+    <img src="./images/global_map.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 2: Map initialisation
@@ -210,7 +221,7 @@ figure 2: Map initialisation
 For now, the map is empty. __The first thing we want to find out is where the birds are passing by?__
 
 <p align="center">
-    <img src="./images/add_layer.png" width="70%">
+    <img src="./images/add_layer.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 3: Layers view
@@ -219,7 +230,7 @@ figure 3: Layers view
 To do so, let's add a layer named `Birds trails` to visualise the birds paths.
 
 <p align="center">
-    <img src="./images/geometric_features.png" width="70%">
+    <img src="./images/geometric_features.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 4: Adding a <b>Gemetric features</b> layer named 'Birds trails'
@@ -228,7 +239,7 @@ figure 4: Adding a <b>Gemetric features</b> layer named 'Birds trails'
 In the `Geometry` section (2nd section), choose the _trail_ features geo-field
 
 <p align="center">
-    <img src="./images/geometric_features_geometry.png" width="70%">
+    <img src="./images/geometric_features_geometry.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 5: Choosing the geometry field to display on the map
@@ -237,7 +248,7 @@ figure 5: Choosing the geometry field to display on the map
 Now, let's define the layer's style. As a starter, we choose the best representation of our geometries: Birds trails are lines. We also choose a fixed color (blue for instance) and a fixed width of 3 pixels
 
 <p align="center">
-    <img src="./images/geometric_features_style.png" width="70%">
+    <img src="./images/geometric_features_style.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 6: Customising 'Birds trails' style
@@ -246,7 +257,7 @@ figure 6: Customising 'Birds trails' style
 After clicking on __Save__, our first layer is created
 
 <p align="center">
-    <img src="./images/birds_trail_layer.png" width="70%">
+    <img src="./images/birds_trail_layer.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 7: New layer 'Birds trail' is created
@@ -255,7 +266,7 @@ figure 7: New layer 'Birds trail' is created
 We can go and preview the layer in `Preview` tab
 
 <p align="center">
-    <img src="./images/birds_trail_preview.png" width="70%">
+    <img src="./images/birds_trail_preview.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 8: Preview of 'Birds trail' layer
@@ -273,7 +284,7 @@ For that, let's define a timeline: a histogram that will represent the number of
 For the x-Axis we choose the `timestamp` field and for the y-Axis we choose `Hits count`: the number of positions in each bucket. We set 50 buckets in this example
 
 <p align="center">
-    <img src="./images/timeline.png" width="70%">
+    <img src="./images/timeline.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 9: Defining a timeline
@@ -282,7 +293,7 @@ figure 9: Defining a timeline
 In the _Render_ tab we can set a title for the timeline, date format and the histogram type. Let's choose bars histogram
 
 <p align="center">
-    <img src="./images/timeline_render.png" width="70%">
+    <img src="./images/timeline_render.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 10: Timeline render
@@ -296,7 +307,7 @@ To define the search bar we can set
 - the field used to autocomplete the searched words
 
 <p align="center">
-    <img src="./images/searchbar.png" width="70%">
+    <img src="./images/searchbar.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 11: Defining the search bar
@@ -314,7 +325,7 @@ Let's save this dashboard by clicking on the 'Disk' icon at the left-bottom of t
 If we go back to ARLAS-wui-hub at http://localhost:81/hub, we'll find the `Birdstracking dashboard` created.
 
 <p align="center">
-    <img src="./images/dashboard_created.png" width="70%">
+    <img src="./images/dashboard_created.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 12: List of created dashboards
@@ -323,7 +334,7 @@ figure 12: List of created dashboards
 We can now __View__ it in ARLAS-wui
 
 <p align="center">
-    <img src="./images/check_dashboard_1.png" width="70%">
+    <img src="./images/check_dashboard_1.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 13: View of dashboard in ARLAS-wui
@@ -336,7 +347,7 @@ We now see the trails on the map but we can't distinguish the birds! Let's chang
 Let's go back to the dashboard builder and edit 'Birds trails' layer
 
 <p align="center">
-    <img src="./images/edit_birds_trail.png" width="70%">
+    <img src="./images/edit_birds_trail.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 14: Editing a layer
@@ -345,7 +356,7 @@ figure 14: Editing a layer
 In the `Style` section, we choose __Generated__ colors option that will automatically generates a hex color from the chosen field values. For our case, we choose `name` field
 
 <p align="center">
-    <img src="./images/generated_color.png" width="70%">
+    <img src="./images/generated_color.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 15: Setting the trails colors by birds name
@@ -356,7 +367,7 @@ After saving the layer, we can preview it again and see that now we have two bir
 - Redrunner (blue)
 
 <p align="center">
-    <img src="./images/generated_color_preview.png" width="70%">
+    <img src="./images/generated_color_preview.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 16: Preview generated trails colors by birds names
@@ -370,7 +381,7 @@ To answer this question, let's create a dedicated layer!
 Before doing that, we will first create a __Visualisation set__, a space where to organise layers that have to be displayed/hidden together. For instance, the 'Birds trails' layer is put under the 'All layers' visualisation set
 
 <p align="center">
-    <img src="./images/visualisation_sets.png" width="70%">
+    <img src="./images/visualisation_sets.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 17: List of visualisation sets
@@ -379,7 +390,7 @@ figure 17: List of visualisation sets
 For our altitude layer, let's create a new visualisation set called 'Altitude'
 
 <p align="center">
-    <img src="./images/add_visualisation.png" width="70%">
+    <img src="./images/add_visualisation.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 18: Adding a new visualisation set
@@ -388,7 +399,7 @@ figure 18: Adding a new visualisation set
 Now let's create our new layer that will allow us to analyse the birds positions altitudes.
 
 <p align="center">
-    <img src="./images/altitude_name.png" width="70%">
+    <img src="./images/altitude_name.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 19: Adding a new layer for birds positions altitude
@@ -399,7 +410,7 @@ in the `Style` section, we interpolate the trails colors with interpolation fiel
 We set the `height_m` values interval between 0 and 1000 meters and we choose a color palette
 
 <p align="center">
-    <img src="./images/altitude_interpolation.png" width="70%">
+    <img src="./images/altitude_interpolation.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 20: Interpolating trails colors to positions altitudes
@@ -408,7 +419,7 @@ figure 20: Interpolating trails colors to positions altitudes
 After saving this layer we can preview it in the `Preview` tab and start our analyse!
 
 <p align="center">
-    <img src="./images/altitude_preview.png" width="70%">
+    <img src="./images/altitude_preview.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 21: Preview of birds trails according to the altitude
@@ -429,7 +440,7 @@ That's why ARLAS proposes a geo-analytic view: we can aggregate the birds positi
 Let's create a dedicated layer for birds positions geographical distribution.
 
 <p align="center">
-    <img src="./images/position_distribution_geometry.png" width="70%">
+    <img src="./images/position_distribution_geometry.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 22: Creating a geographical distribution layer
@@ -442,7 +453,7 @@ We will display on the map the grid's cells.
 Let's define the style of these cells in `Style` section
 
 <p align="center">
-    <img src="./images/positions_distribution_style.png" width="70%">
+    <img src="./images/positions_distribution_style.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 23: Styling the geographical distribution layer
@@ -453,7 +464,7 @@ We interpolate the cells colors to the number of birds positions in each cell. T
 After saving this layer, we can again visualise it and explore where the positions are geographically
 
 <p align="center">
-    <img src="./images/positions_distribution_preview.png" width="70%">
+    <img src="./images/positions_distribution_preview.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 24: Birds positions geographical distribution
@@ -471,7 +482,7 @@ We can split the analytics board into tabs. Let's create a tab called 'Tracking'
 
 
 <p align="center">
-    <img src="./images/analytics_new_tab.png" width="70%">
+    <img src="./images/analytics_new_tab.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 25: Creating a tab in Analytics board
@@ -490,7 +501,7 @@ figure 26: Creating a group in Analytics board tab
 Let's now create our histogram
 
 <p align="center">
-    <img src="./images/choose_widget.png" width="70%">
+    <img src="./images/choose_widget.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 27: Choosing a histogram for speed distribution
@@ -501,7 +512,7 @@ We can give a title to the Speed distribution histogram
 For the x-Axis we choose `speed_ms` field and for the y-Axis we choose `Hits count`: the number of positions in each bucket. We set 70 buckets in this example
 
 <p align="center">
-    <img src="./images/add_histogram.png" width="70%">
+    <img src="./images/add_histogram.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 28: Defining speed distribution histogram
@@ -511,7 +522,7 @@ When we save the histogram we automatically get a preview of it in the analytics
 
 
 <p align="center">
-    <img src="./images/preview_widget.png" width="70%">
+    <img src="./images/preview_widget.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 29: Preview speed distribution histogram
@@ -520,7 +531,7 @@ figure 29: Preview speed distribution histogram
 We can now save the dashbord again using the 'Disk' icon at the left-bottom of the page and view it ARLAS-wui
 
 <p align="center">
-    <img src="./images/check_dashboard_3.png" width="70%">
+    <img src="./images/check_dashboard_3.png" width="100%">
 </p>
 <p align="center" style="font-style: italic;">
 figure 30: Exploring Birdstracking dashboard in ARLAS-wui
