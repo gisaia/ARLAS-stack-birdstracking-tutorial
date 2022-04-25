@@ -170,7 +170,7 @@ curl -X PUT \
 
 - Check that the collection is created using the ARLAS-server `collections/{collection}`
 
-```
+```shell
 curl -X GET "http://localhost:81/server/collections/birdstracking_collection?pretty=true"
 
 ```
