@@ -118,14 +118,7 @@ curl -XGET http://localhost:9200/birdstracking_index/_mapping?pretty
 
 ```
 
-- Index data in `birdstracking_data.csv` in Elasticsearch.  For that, We need Logstash as a data processing pipeline that ingests data in Elasticsearch. So we will download it and untar it:
-
-```shell
-( wget https://artifacts.elastic.co/downloads/logstash/logstash-7.4.2.tar.gz; tar -xzf logstash-7.4.2.tar.gz )
-
-```
-
-- Logstash needs a configuration file (`birdtracking2es.logstash.conf`) that indicates how to transform data from the CSV file and index it in Elasticsearch.
+- Index data that is in `birdstracking_data.csv` in Elasticsearch. For that, We need Logstash as a data processing pipeline that ingests data in Elasticsearch. Logstash needs a configuration file (`birdtracking2es.logstash.conf`) that indicates how to transform data from the CSV file and index it in Elasticsearch.
 
 ```shell
 curl "https://raw.githubusercontent.com/gisaia/ARLAS-stack-birdstracking-tutorial/main/configs/birdtracking2es.logstash.conf" \
@@ -133,13 +126,14 @@ curl "https://raw.githubusercontent.com/gisaia/ARLAS-stack-birdstracking-tutoria
     
 ```
 
-- Now we can index the data:
+- Now we will use Logstash in order to apply the data model transformation and to index data in Elasticsearch given the `birdtracking2es.logstash.conf` configuration file with the docker image `docker.elastic.co/logstash/logstash` :
 
 ```shell
-cat birdstracking_data.csv | \
-    ./logstash-7.4.2/bin/logstash \
-    -f birdtracking2es.logstash.conf
-    
+cat birdstracking_data.csv | docker run -e XPACK_MONITORING_ENABLED=false \
+    --net arlas-exploration-stack-develop_esnet \
+    --env ELASTICSEARCH=elasticsearch:9200  \
+    --env INDEXNAME=openaq_index --rm -i \
+    -v ${PWD}/birdtracking2es.logstash.conf:/usr/share/logstash/pipeline/logstash.conf docker.elastic.co/logstash/logstash:7.11.2
 ```
 
 - Check if __77 384__ birds positions are indexed:
