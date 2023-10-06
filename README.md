@@ -4,7 +4,7 @@
 ### What will you learn ?
 With this tutorial, you'll be able to:
 
-- start an ARLAS-Exploration stack
+- Start an ARLAS-Exploration stack
 - Index some birdtracking data in Elasticsearch
 - Reference the indexed birdtracking data in ARLAS
 - Create a view of ARLAS-wui (a dashboard) to explore the birdtracking data using ARLAS-wui-hub and ARLAS-wui-builder
@@ -134,7 +134,7 @@ network=$(docker network ls --format "table {{.Name}}" | grep arlas)
 cat birdstracking_data.csv | docker run -e XPACK_MONITORING_ENABLED=false \
     --net ${network} \
     --env ELASTICSEARCH=elasticsearch:9200  \
-    --env INDEXNAME=openaq_index --rm -i \
+    --env INDEXNAME=birdstracking_index --rm -i \
     -v ${PWD}/birdtracking2es.logstash.conf:/usr/share/logstash/pipeline/logstash.conf docker.elastic.co/logstash/logstash:7.11.2
 ```
 
